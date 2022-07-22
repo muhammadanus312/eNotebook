@@ -13,7 +13,7 @@ Router.post('/createuser',[
     body('email','enter valid email address').isEmail(),
     body('password').isLength({min:5}),
 ],async (req,res)=>{
-
+    let output=false
     //if validation error
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -46,8 +46,9 @@ Router.post('/createuser',[
             id:user.id
         }
     }
-      const jwtdata=jwt.sign(data,JWT_SECRET)
-      res.send(jwtdata)
+      const token=jwt.sign(data,JWT_SECRET)
+      output=true
+      res.send({token,output})
     })
 
 
@@ -64,6 +65,7 @@ Router.post('/login',[
 
     const{email,password}=req.body
     try{
+        let output=false
         let user= await User.findOne({email:req.body.email})
         if(!user){
             res.status(400).json({error:"Email or password invalid"})
@@ -80,7 +82,8 @@ Router.post('/login',[
             }
         }
         const token=jwt.sign(data,JWT_SECRET)
-        res.json({token})
+        output=true
+        res.json({token,output})
     }
     catch(err){
         console.error(error.message)

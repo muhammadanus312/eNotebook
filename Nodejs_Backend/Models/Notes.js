@@ -14,14 +14,6 @@ const Notes= new Schema({
         type:String,
         require:true
     },
-    password:{
-        type:String,
-        require:true
-    },
-    tag:{
-        type:String,
-        default:"general"
-    },
     time:{
         type: Date,
         default: Date.now

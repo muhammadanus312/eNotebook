@@ -32,7 +32,6 @@ Router.post('/addnote',getuser,[
     const note=await Notes.create({
         title: req.body.title,
         description: req.body.description,
-        tag:req.body.tag,
         user:req.user.id
         
       })
@@ -49,16 +48,13 @@ Router.put('/updatenote/:id',getuser,[
     body('title','enter valid title').isLength({min:4}),
     body('description','enter valid description').isLength({min:5})
 ],async (req,res)=>{
-    const {title,description,tag}=req.body
+    const {title,description}=req.body
     const updatednote={}
     if(title){
         updatednote.title=title
     }
     if(description){
         updatednote.description=description
-    }
-    if(tag){
-        updatednote.tag=tag
     }
 
     let note=await Notes.findById(req.params.id)

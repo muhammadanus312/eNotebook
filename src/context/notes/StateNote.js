@@ -4,9 +4,7 @@ import { useState } from "react";
 
 const host='http://localhost:5000'
 const StateNote=(props)=>{
-    const m=[
-        
-      ]
+    let m=[]
       const [notes, setnotes] = useState(m)
 
       //   get notes
@@ -16,7 +14,7 @@ const StateNote=(props)=>{
           method:'GET',
           headers:{
             'Content-type':'application/json',
-            'authentication-token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJkMDk0OTc2MWEzODZlNGUzNzA4YWUxIn0sImlhdCI6MTY1NzkzMzcwNX0.hhJ7CDtCegzlbxl_VDFrjQci0JQL8XSaIrowcV2jENs'
+            'authentication-token':localStorage.getItem('token')
           },
           // body:JSON.stringify({title,description,tag})
         })
@@ -28,20 +26,25 @@ const StateNote=(props)=>{
 
 
     //   insert notes
-    const insertNote = async (title, description, tag) => {
+    const insertNote = async (title, description) => {
       // TODO: API Call
       // API Call 
-      const response = await fetch(`${host}/api/notes/addnote`, {
+      // console.log(title,description,tag)
+      const data=await fetch('http://localhost:5000/api/notes/addnote', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          "authentication-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJkMDk0OTc2MWEzODZlNGUzNzA4YWUxIn0sImlhdCI6MTY1NzkzMzcwNX0.hhJ7CDtCegzlbxl_VDFrjQci0JQL8XSaIrowcV2jENs"
+          Accept: 'application/json',
+          "authentication-token": localStorage.getItem('token')
         },
-        body: JSON.stringify({title, description, tag})
-      });
+        body: JSON.stringify({
+          "title":`${title}`,
+          "description":`${description}`
+      })
+      })
   
-      const note = await response.json();
-      console.log(note)
+      const note = await data.json();
+      // console.log(note)
       setnotes(notes.concat(note))
     }
 
@@ -52,34 +55,36 @@ const StateNote=(props)=>{
           method:'DELETE',
           headers:{
             'content-type':'application/json',
-            'authentication-token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJkMDk0OTc2MWEzODZlNGUzNzA4YWUxIn0sImlhdCI6MTY1NzkzMzcwNX0.hhJ7CDtCegzlbxl_VDFrjQci0JQL8XSaIrowcV2jENs'
+            'authentication-token':localStorage.getItem('token')
           },
-          // body:JSON.stringify({note_id})
         })
-        // const json_data=data.json()
       }
 
 
 
     //update notes
-    const updateNote=async (note_id,title,description,tag)=>{
+    const updateNote=async (note_id,title,description)=>{
+      console.log()
       // api call
       const data=await fetch(`${host}/api/notes/updatenote/${note_id}`,{
-        method:'POST',
+        method:'PUT',
         headers:{
           'content-type':'application/json',
-          'authentication-token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJkMDk0OTc2MWEzODZlNGUzNzA4YWUxIn0sImlhdCI6MTY1NzkzMzcwNX0.hhJ7CDtCegzlbxl_VDFrjQci0JQL8XSaIrowcV2jENs'
+          'authentication-token':localStorage.getItem('token')
         },
-        body:JSON.stringify(({title,description,tag}))
+        body:JSON.stringify({
+          "title":`${title}`,
+          "description":`${description}`
+        })
       })
       const json_data=data.json()
-      notes.forEach(element => {
-        if(element._id===note_id){
-          element.title=title
-          element.description=description
-          element.tag=tag
+      for(let i=0;i<notes.length;i++){
+        if(notes[i]._id===note_id){
+          notes[i].title=title
+          notes[i].description=description
+          break;
         }
-      });
+      }
     }
 
     return(

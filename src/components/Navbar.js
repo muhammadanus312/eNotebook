@@ -5,7 +5,6 @@ import { useEffect } from 'react'
 export default function Navbar() {
   let location=useLocation()
   useEffect(() => {
-      console.log(location.pathname)
     
   }, [location])
   
@@ -27,6 +26,10 @@ export default function Navbar() {
         </li>
       </ul>
     </div>
+  </div>
+  <div className="d-flex">
+  <Link to="/signin" class="btn btn-light mx-3" role="button">Login</Link>
+  <Link to="/signup" class="btn btn-light mx-3" role="button">Signup</Link>
   </div>
 </nav>
     </>

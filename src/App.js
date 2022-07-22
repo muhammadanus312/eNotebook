@@ -5,6 +5,8 @@ import About from "./components/About";
 import Home from "./components/Home";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import StateNote from "./context/notes/StateNote";
+import Signin from "./components/Signin";
+import Signup from "./components/Signup";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
             <Route path="/" element={<Home/>} />
             <Route path="/home" element={<Home/>} />
             <Route path="/about" element={<About/>} />
+            <Route path="/signin" element={<Signin/>} />
+            <Route path="/signup" element={<Signup/>} />
         </Routes>
        </div>
         </Router>
