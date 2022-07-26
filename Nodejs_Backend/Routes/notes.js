@@ -19,6 +19,7 @@ Router.post('/addnote',getuser,[
     body('title','enter valid title').isLength({min:4}),
     body('description','enter valid description').isLength({min:5})
 ],async (req,res)=>{
+    let output=false
     // const {title,description,tag}=req.body
     //if validation error
     try {
@@ -35,7 +36,8 @@ Router.post('/addnote',getuser,[
         user:req.user.id
         
       })
-      res.send(note)
+      output=true
+      res.send({note,output})
     } catch (error) {
         console.error(error.message)
         // res.status(500).send("server error")
@@ -50,6 +52,7 @@ Router.put('/updatenote/:id',getuser,[
 ],async (req,res)=>{
     const {title,description}=req.body
     const updatednote={}
+    let output=false
     if(title){
         updatednote.title=title
     }
@@ -65,14 +68,15 @@ Router.put('/updatenote/:id',getuser,[
         return res.status(404).send("can't update")
     }
     note= await Notes.findByIdAndUpdate(req.params.id,{$set:updatednote},{new:true})
-    res.send({note})
+    output=true
+    res.send({note,output})
 
 })
 
 
 // Route:4 delete note using delete method
 Router.delete('/deletenote/:id',getuser,async (req,res)=>{
-    
+    let output=false
     let note=await Notes.findById(req.params.id)
     if(!note){
         return res.status(404).send("not found")
@@ -81,7 +85,8 @@ Router.delete('/deletenote/:id',getuser,async (req,res)=>{
         return res.status(404).send("can't update")
     }
     note= await Notes.findByIdAndDelete(req.params.id)
-    res.send("succesfully deleted")
+    output=true
+    res.send({output})
 
 })
 

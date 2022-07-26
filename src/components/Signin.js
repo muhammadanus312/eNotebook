@@ -1,7 +1,7 @@
 import React,{useState} from "react";
 import { useNavigate } from 'react-router-dom';
 const host='http://localhost:5000'
-export default function Signin() {
+export default function Signin(props) {
   // let history=useHistory()
   let navigate = useNavigate();
 const [user, setuser] = useState({email:"",password:""})
@@ -20,12 +20,13 @@ const LoginUser=async ()=>{
   {
     //redirect
     localStorage.setItem('token',jsonData.token)
-    // history.push("/")
     navigate('/');
+    props.showalert("Succesfully Login")
+
   }
-  
   else
-  alert(jsonData.error)
+  props.showalert("invalid email or password","error")
+  
 
   
 }
@@ -43,7 +44,7 @@ const change_user=()=>{
       <div className="col-md-9 col-lg-6 col-xl-5">
         <div className="container" style={{fontSize:"5rem"}}>eNotebook</div>
         <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
-          className="img-fluid" />
+          className="img-fluid" alt="image" />
       </div>
       <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
         <form >

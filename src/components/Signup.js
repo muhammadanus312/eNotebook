@@ -1,7 +1,7 @@
 import React ,{useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 const host='http://localhost:5000'
-export default function Signup() {
+export default function Signup(props) {
   let navigate = useNavigate();
 const [user, setuser] = useState({name:"",email:"",password:"",cpassword:""})
 
@@ -21,13 +21,18 @@ const SignupUser=async ()=>{
     if(jsonData.output===true)
     {
       //redirect
-      localStorage.setItem('token',jsonData.token)
-      // history.push("/")
-      navigate('/login');
+      // localStorage.setItem('token',jsonData.token)
+      navigate('/');
+      props.showalert("Succesfully Signup")
+  
     }
-    else{
-      alert(jsonData.error)
+    else if(jsonData.error===true)
+    {
+      props.showalert("user already exist","error")
+
     }
+    else
+    props.showalert("invalid email or password","error")
   }
   
 }
@@ -54,7 +59,7 @@ const onchange=()=>{
             <div className="form-outline mb-4">
             <label className="form-label" htmlfor="form3Example3">Name</label>
             <input type="text" id="name" className="form-control form-control-lg" required onChange={onchange}
-              placeholder="Enter a valid email address" />
+              placeholder="Enter a name" />
           </div>  
           <div className="form-outline mb-4">
             <label className="form-label" htmlfor="form3Example3">Email address</label>

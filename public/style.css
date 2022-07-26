@@ -1,3 +1,7 @@
+body{
+    background-color: rgb(241, 236, 228);
+}
+
 .divider:after,
 .divider:before {
 content: "";
@@ -12,4 +16,14 @@ height: calc(100% - 73px);
 .h-custom {
 height: 100%;
 }
+}
+
+.about-h{
+    margin: 80px 170px;
+ } 
+.about-main{
+    background-image: url('https://cdn.pixabay.com/photo/2016/11/22/23/09/fountain-pen-1851096__340.jpg') no-repeat center center/cover;
+    /* height: 800px; */
+    /* margin: 0px; */
+    
 }

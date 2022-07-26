@@ -24,7 +24,7 @@ Router.post('/createuser',[
     let user= await User.findOne({email:req.body.email})
     console.log(user)
     if(user){
-        res.status(400).json({error:"user already exist"})
+        res.status(400).json({error:true})
     }
 
     let salt= await bcrypt.genSalt(10)
@@ -36,11 +36,7 @@ Router.post('/createuser',[
         email: req.body.email,
         password: securepassword,
       })
-    //   .then(user => res.json(user))
-    //   .catch(err=>{console.log(err)
-    //     res.json({error:"email already exist",msg:err.message})
-    //  })
-    // let data=user.id
+    
     let data={
         user:{
             id:user.id
@@ -48,7 +44,7 @@ Router.post('/createuser',[
     }
       const token=jwt.sign(data,JWT_SECRET)
       output=true
-      res.send({token,output})
+      res.send({output})
     })
 
 

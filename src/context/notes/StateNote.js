@@ -6,6 +6,7 @@ const host='http://localhost:5000'
 const StateNote=(props)=>{
     let m=[]
       const [notes, setnotes] = useState(m)
+      const [viewNote, setviewNote] = useState({title:"",description:""})
 
       //   get notes
       const getAllNotes=async ()=>{
@@ -44,14 +45,14 @@ const StateNote=(props)=>{
       })
   
       const note = await data.json();
-      // console.log(note)
-      setnotes(notes.concat(note))
+      
+      setnotes(notes.concat(note.note))
     }
 
 
     // delete notes
       const deleteNote= async (note_id)=>{
-        const data=await fetch(`${host}/api/notes/deletenote/${note_id}`,{
+        await fetch(`${host}/api/notes/deletenote/${note_id}`,{
           method:'DELETE',
           headers:{
             'content-type':'application/json',
@@ -66,7 +67,7 @@ const StateNote=(props)=>{
     const updateNote=async (note_id,title,description)=>{
       console.log()
       // api call
-      const data=await fetch(`${host}/api/notes/updatenote/${note_id}`,{
+      await fetch(`${host}/api/notes/updatenote/${note_id}`,{
         method:'PUT',
         headers:{
           'content-type':'application/json',
@@ -77,7 +78,7 @@ const StateNote=(props)=>{
           "description":`${description}`
         })
       })
-      const json_data=data.json()
+      // const json_data=data.json()
       for(let i=0;i<notes.length;i++){
         if(notes[i]._id===note_id){
           notes[i].title=title
@@ -88,7 +89,7 @@ const StateNote=(props)=>{
     }
 
     return(
-        <ContextNote.Provider value={{notes,insertNote,deleteNote,updateNote,getAllNotes}}>
+        <ContextNote.Provider value={{notes,insertNote,deleteNote,updateNote,getAllNotes,viewNote,setviewNote}}>
             {props.children}
         </ContextNote.Provider>
     )

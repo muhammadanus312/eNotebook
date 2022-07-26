@@ -1,16 +1,20 @@
 import React, { useContext,useEffect,useRef,useState } from "react";
 import ContextNote from "../context/notes/ContextNote";
-import InsertNotes from "./InsertNotes";
 import NoteElements from "./NoteElements";
 import { useNavigate } from 'react-router-dom';
 
 
-export default function Notes() {
+export default function Notes(props) {
     let navigate = useNavigate();
   const Context = useContext(ContextNote);
   const { notes,getAllNotes,updateNote } = Context;
   useEffect(() => {
-    getAllNotes()
+      if(localStorage.getItem('token')==null || localStorage.getItem('token')==undefined){
+        navigate('/signin');
+      }
+      else{
+        getAllNotes()
+      }
   }, [notes])
 
 
@@ -20,6 +24,8 @@ const [note, setnote] = useState({id:"",Utitle:"",Udescription:""})
   const click_update=()=>{
     updateNote(note.id,note.Utitle,note.Udescription)
     Refclosemodal.current.click()
+    props.showalert("Notes Updates")
+    
 }
 
 
@@ -35,14 +41,12 @@ const change_state_des=(e)=>{
   const ref = useRef(null)
   const Refclosemodal = useRef(null)
   const update_icon_click=(current)=>{
-
       ref.current.click()
       setnote({id:current._id,Utitle:current.title, Udescription:current.description})
   }
   return (
     <div>
       
-   <InsertNotes/>
 
 <button type="button" ref={ref} className="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#exampleModal"></button>
 <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -93,14 +97,14 @@ const change_state_des=(e)=>{
 
 
 
-      <h1>All notes</h1>
+      <h1>Your Notes</h1>
       <div className="row">
       {notes.length===0 && <div className="conatiner my-3">No Notes to display</div>}
         {notes.map((note) => {
           return (
             <div className="col-md-4">
               
-              <NoteElements key={note._id}  update_icon_click={update_icon_click} note={note} />
+              <NoteElements key={note._id}  update_icon_click={update_icon_click} note={note} showalert={props.showalert} />
             </div>
           );
         })}
